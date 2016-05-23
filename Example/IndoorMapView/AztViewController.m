@@ -67,7 +67,7 @@
 
 - (void) onMapClicked:(MapPoint*)point
 {
-    NSLog(@"map clicked at %f %f",point.longitude,point.latitude);
+//    NSLog(@"map clicked at %f %f",point.longitude,point.latitude);
     if(isTapMarkerEnabled)
     {
         [mapView setMarkerWithId:120 forLongitude:point.longitude withLatitude:point.latitude withImage:[UIImage imageNamed:@"sample"]];
@@ -76,6 +76,6 @@
 
 -(void)onMarkerClicked:(MapMarker*)marker
 {
-    NSLog(@"marker clicked %d",marker.id);
+//    NSLog(@"marker clicked %d",marker.id);
 }
 @end

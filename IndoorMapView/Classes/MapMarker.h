@@ -16,6 +16,7 @@
 @property int x;
 @property int y;
 @property UIView* view;
+@property UIImage* image;
 @property UIButton* button;
 
 @end

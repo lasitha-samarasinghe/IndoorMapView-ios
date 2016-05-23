@@ -122,17 +122,32 @@ static CGFloat _currentLevel;
     MapMarker* mark = [[MapMarker alloc]init];
     mark.longitude = longitude;
     mark.latitude = latitude;
+    mark.image = image;
     CLLocationCoordinate2D  ctrpoint = CLLocationCoordinate2DMake(mark.latitude, mark.longitude);
     MKMapPoint ptr = MKMapPointForCoordinate(ctrpoint);
     mark.x = (ptr.x*pow(2, _levels-1)*pow(2, _levels-1))/(_tilingView.frame.size.width*4096);
     mark.y = (ptr.y*pow(2, _levels-1)*pow(2, _levels-1))/(_tilingView.frame.size.height*4096);
     mark.button = [[UIButton alloc]initWithFrame:CGRectMake(mark.x -pinSize/2, mark.y -pinSize, pinSize, pinSize)];
-    [mark.button setImage:image forState:normal];
+    UIImage* scaledImage = image;
+    if(mark.button.frame.size.width>image.size.width && mark.button.frame.size.height>image.size.height)
+    {
+        scaledImage = [self scaleImage:image forRect:mark.button.frame];
+    }
+    [mark.button setImage:scaledImage forState:normal];
     mark.button.userInteractionEnabled = YES;
     [mark.button addTarget:self action:@selector(markerClicked:) forControlEvents:UIControlEventTouchUpInside];
     mark.button.tag = markers.count;
     return mark;
 
+}
+
+-(UIImage*)scaleImage:(UIImage*)image forRect:(CGRect)rect
+{
+    UIGraphicsBeginImageContext( rect.size );
+    [image drawInRect:CGRectMake(0,0,rect.size.width,rect.size.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
 }
 
 - (UIImage *)bundledImageNamed:(NSString*)name{
@@ -354,7 +369,7 @@ static CGFloat _currentLevel;
     for(MapMarker* marker in tempArray)
     {
         [marker.button removeFromSuperview];
-        MapMarker* res = [self createMarker:marker.button forLongitude:marker.longitude withLatitude:marker.latitude withImage:marker.button.imageView.image];
+        MapMarker* res = [self createMarker:marker.button forLongitude:marker.longitude withLatitude:marker.latitude withImage:marker.image];
         [_tilingView addSubview:res.button];
         [self bringSubviewToFront:res.button];
         [markers addObject:res];
