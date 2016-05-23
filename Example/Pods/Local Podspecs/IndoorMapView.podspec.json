@@ -1,0 +1,32 @@
+{
+  "name": "IndoorMapView",
+  "version": "0.1.0",
+  "summary": "A short description of IndoorMapView.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/IndoorMapView",
+  "license": "MIT",
+  "authors": {
+    "Lasitha Samarasinghe": "samarasinghe.lasitha@gmail.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/IndoorMapView.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "IndoorMapView/Classes/**/*",
+  "resources": [
+    "Pod/**/*.png"
+  ],
+  "resource_bundles": {
+    "Assets": [
+      "Pod/**/*.png"
+    ]
+  },
+  "frameworks": [
+    "UIKit",
+    "MapKit",
+    "CoreLocation"
+  ]
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>IndoorMapView-Assets.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>IndoorMapView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-IndoorMapView_Example-IndoorMapView_Tests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-IndoorMapView_Example.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>2121CB656931BB29E2587C9DF794AAA5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>287BFF79E360CFA1D1CC2393C5977C0A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5823C30AB9047FE2437680A07A5DB6AB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7410E53F1815C67D245F9EEF89CE2CCC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>

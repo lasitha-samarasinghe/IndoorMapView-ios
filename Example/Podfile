@@ -1,0 +1,9 @@
+use_frameworks!
+
+target 'IndoorMapView_Example' do
+  pod 'IndoorMapView', :path => '../'
+
+  target 'IndoorMapView_Tests' do
+  pod 'IndoorMapView', :path => '../'
+  end
+end

@@ -1,0 +1,14 @@
+PODS:
+  - IndoorMapView (0.1.0)
+
+DEPENDENCIES:
+  - IndoorMapView (from `../`)
+
+EXTERNAL SOURCES:
+  IndoorMapView:
+    :path: ../
+
+SPEC CHECKSUMS:
+  IndoorMapView: 286bfe407c4cdb518ff5fedb07b6609bc3d2c44f
+
+COCOAPODS: 0.39.0

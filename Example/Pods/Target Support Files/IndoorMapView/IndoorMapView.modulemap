@@ -1,0 +1,6 @@
+framework module IndoorMapView {
+  umbrella header "IndoorMapView-umbrella.h"
+
+  export *
+  module * { export * }
+}
