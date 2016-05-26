@@ -25,6 +25,9 @@
 -(void)setupWithURL:(NSURL*)url forView:(UIView*)view withLevels:(float)levels withTileSize:(CGSize)size;
 -(void)setCurrentZoom:(CGFloat)zoom;
 -(void)setMaximumZoom:(CGFloat)zoom;
+
+-(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude;
 -(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image;
+-(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image withTitle:(NSString*)title withDescription:(NSString*)description;
 
 @end

@@ -42,6 +42,7 @@
     [mapView setupWithURL:url forView:self.view withLevels:2.0 withTileSize:size];
     self.view = mapView;
     mapView.mapDelegate = self;
+    [mapView setMarkerWithId:120 forLongitude:0 withLatitude:0 withImage:[UIImage imageNamed:@"sample"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -63,6 +64,7 @@
     [mapView setupWithURL:url forView:self.view withLevels:level withTileSize:size];
     self.view = mapView;
     mapView.mapDelegate = self;
+    [mapView setMarkerWithId:120 forLongitude:0 withLatitude:0 withImage:[UIImage imageNamed:@"sample"]];
 }
 
 - (void) onMapClicked:(MapPoint*)point

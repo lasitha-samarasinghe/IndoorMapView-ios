@@ -18,5 +18,7 @@
 @property UIView* view;
 @property UIImage* image;
 @property UIButton* button;
+@property NSString* title;
+@property NSString* descriptionText;
 
 @end

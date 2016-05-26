@@ -39,6 +39,9 @@ static CGFloat _currentLevel;
     CGFloat _maxZoom;
     NSMutableArray* markers;
     BOOL isMarker;
+    BOOL shouldShowAnnotation;
+    UIView* annotationView;
+    MapMarker* selectedMarker;
 }
 
 #pragma mark - init
@@ -58,6 +61,8 @@ static CGFloat _currentLevel;
     _currentLevel = 0;
     _maxZoom = 0;
     isMarker = NO;
+    shouldShowAnnotation = YES;
+    self.layer.shouldRasterize = NO;
     [self setIndex:0];
     self.userInteractionEnabled = YES;
     self.backgroundColor = [UIColor grayColor];
@@ -99,7 +104,19 @@ static CGFloat _currentLevel;
     _maxZoom = zoom;
 }
 
--(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image;
+
+-(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude
+{
+    UIImage* image = [self bundledImageNamed:@"pin"];
+    [self setMarkerWithId:mid forLongitude:longitude withLatitude:latitude withImage:image];
+}
+
+-(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image
+{
+    [self setMarkerWithId:mid forLongitude:longitude withLatitude:latitude withImage:image withTitle:nil withDescription:nil];
+}
+
+-(void)setMarkerWithId:(int)mid forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image withTitle:(NSString*)title withDescription:(NSString*)description
 {
     if(markers == nil)
     {
@@ -107,6 +124,8 @@ static CGFloat _currentLevel;
     }
     MapMarker* newMarker = [self createMarker:nil forLongitude:longitude withLatitude:latitude withImage:image];
     newMarker.id = mid;
+    newMarker.title = title;
+    newMarker.descriptionText = description;
     [_tilingView addSubview:newMarker.button];
     [markers addObject:newMarker];
 }
@@ -115,10 +134,6 @@ static CGFloat _currentLevel;
 -(MapMarker*)createMarker:(UIButton*)button forLongitude:(float)longitude withLatitude:(float)latitude withImage:(UIImage*)image
 {
     int pinSize = 40/self.zoomScale;
-    if(image == nil)
-    {
-        image = [self bundledImageNamed:@"pin"];
-    }
     MapMarker* mark = [[MapMarker alloc]init];
     mark.longitude = longitude;
     mark.latitude = latitude;
@@ -138,6 +153,93 @@ static CGFloat _currentLevel;
     [mark.button addTarget:self action:@selector(markerClicked:) forControlEvents:UIControlEventTouchUpInside];
     mark.button.tag = markers.count;
     return mark;
+}
+
+-(void)createAnnotationForMarker:(MapMarker*)marker
+{
+    selectedMarker = marker;
+    [annotationView removeFromSuperview];
+    marker.title = @"Sorry about the  confusion. That's a shortcut I added with a UIView catagory. Why are you using self.bounds instead of self.frame?";
+    marker.descriptionText = @"Sorry about the  confusion. That's a shortcut I added with a UIView catagory. Why are you using self.bounds instead of self.frame?";
+    UIFont *systemFont = [UIFont systemFontOfSize:14];
+    NSDictionary *attributes = @{NSFontAttributeName: systemFont};
+    CGSize descTextSize = [marker.descriptionText sizeWithAttributes:attributes];
+    
+    UIFont *systemFontBold = [UIFont systemFontOfSize:16 weight:3];
+    NSDictionary *attributesBold = @{NSFontAttributeName: systemFontBold};
+    CGSize titleTextSize = [marker.title sizeWithAttributes:attributesBold];
+    
+    UILabel* lblTitle;
+    UILabel* lblDescription;
+    
+    float pad20 = 20;
+    float pad10 = 10;
+    float pad5 = 5;
+
+    //overflows bounds of mapview
+    if (titleTextSize.width > self.frame.size.width-pad20) {
+        int lines = ceil(titleTextSize.width / (self.frame.size.width-pad20-2*pad5));
+        if (marker.title.length==0) {
+            lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, 0, 0)];
+        }
+        else
+        {
+            lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, self.frame.size.width-pad20, lines*(titleTextSize.height)+pad5)];
+        }
+        lblTitle.numberOfLines = lines;
+    }
+    else
+    {
+        if (marker.title.length==0) {
+            lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, 0, 0)];
+        }
+        else
+        {
+            lblTitle = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, titleTextSize.width, titleTextSize.height+pad5)];
+        }
+    }
+    [lblTitle setFont:systemFontBold];
+    lblTitle.text = marker.title;
+    
+    //overflows bounds of mapview
+    if (descTextSize.width > self.frame.size.width-pad20) {
+        int lines = ceil(descTextSize.width / (self.frame.size.width-pad20-2*pad5));
+        if (marker.description.length==0) {
+            lblDescription = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, 0, 0)];
+        }
+        else
+        {
+            lblDescription = [[UILabel alloc]initWithFrame:CGRectMake(pad5, lblTitle.frame.origin.y+lblTitle.frame.size.height, self.frame.size.width-pad20, lines*(descTextSize.height )+pad5)];
+        }
+
+        lblDescription.numberOfLines = lines;
+    }
+    else
+    {
+        if (marker.descriptionText.length==0) {
+            lblDescription = [[UILabel alloc]initWithFrame:CGRectMake(pad5, pad5, 0, 0)];
+        }
+        else
+        {
+            lblDescription = [[UILabel alloc]initWithFrame:CGRectMake(pad5, lblTitle.frame.origin.y+lblTitle.frame.size.height, descTextSize.width, descTextSize.height + pad5)];
+        }
+    }
+    [lblDescription setFont:systemFont];
+    lblDescription.text = marker.descriptionText;
+    
+    float width = ((titleTextSize.width>descTextSize.width)?lblTitle.frame.size.width:lblDescription.frame.size.width)+pad10;
+    float height = lblTitle.frame.size.height+lblDescription.frame.size.height+pad10;
+    CGPoint newPoint = [_tilingView convertPoint:CGPointMake(marker.x, marker.y) toView:self];
+//    CGRect frame = CGRectMake(marker.x-width/2, marker.y-height-marker.button.frame.size.height, width, height);
+    CGRect frame = CGRectMake(newPoint.x-width/2, newPoint.y-height-40, width, height);
+    annotationView = [[UIView alloc]initWithFrame:frame];
+    [annotationView.layer setBorderWidth:1];
+    [annotationView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [annotationView.layer setCornerRadius:pad5];
+    [annotationView addSubview:lblTitle];
+    [annotationView addSubview:lblDescription];
+    [annotationView setBackgroundColor:[UIColor whiteColor]];
+    [self addSubview:annotationView];
 
 }
 
@@ -169,14 +271,22 @@ static CGFloat _currentLevel;
 #pragma mark - selectors and delegate callbacks
 -(void)markerClicked:(id)sender
 {
+    [annotationView removeFromSuperview];
+    selectedMarker = nil;
     isMarker = NO;
     UIButton* btn = (UIButton*)sender;
     MapMarker* marker = [markers objectAtIndex:btn.tag];
     [self.mapDelegate onMarkerClicked:marker];
+    [self createAnnotationForMarker:marker];
+    
+    CGPoint newPoint = [_tilingView convertPoint:CGPointMake(marker.x, marker.y) toView:self];
+    [self setContentOffset:CGPointMake(newPoint.x-self.frame.size.width/2, newPoint.y-self.frame.size.height/2) animated:YES];
 }
 
 -(void)mapClicked:(id)sender
 {
+    [annotationView removeFromSuperview];
+    selectedMarker = nil;
     UITapGestureRecognizer* recognizer = (UITapGestureRecognizer*)sender;
     CGPoint touchPoint = [recognizer locationInView: _tilingView];
     CGSize mapBounds = _tilingView.frame.size;
@@ -373,6 +483,16 @@ static CGFloat _currentLevel;
         [_tilingView addSubview:res.button];
         [self bringSubviewToFront:res.button];
         [markers addObject:res];
+        
+        if(selectedMarker!= nil && marker.button.tag == selectedMarker.button.tag)
+        {
+            selectedMarker = marker;
+        }
+    }
+    
+    if(selectedMarker!=nil)
+    {
+        [self createAnnotationForMarker:selectedMarker];
     }
 }
 

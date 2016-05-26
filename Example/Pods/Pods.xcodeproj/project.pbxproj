@@ -16,6 +16,8 @@
 		533A1D2A57FC8117039812DBA84A6BB6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D93D9F9718D6FEBAFA3BED297D001343 /* Foundation.framework */; };
 		707293E39259381B461F6BC9359A7E4B /* Pods-IndoorMapView_Example-IndoorMapView_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7514C38198AD2E1CA7349B7177C5BACF /* Pods-IndoorMapView_Example-IndoorMapView_Tests-dummy.m */; };
 		78371486D8E3C5D1C6A6E501EBD01F44 /* Pods-IndoorMapView_Example-IndoorMapView_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B2CFF8AD1A4D8175DD3BCF485EDE9444 /* Pods-IndoorMapView_Example-IndoorMapView_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		788EA26E1CF31C6C0021CCF0 /* MapAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = 788EA26C1CF31C6C0021CCF0 /* MapAnnotation.h */; };
+		788EA26F1CF31C6C0021CCF0 /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 788EA26D1CF31C6C0021CCF0 /* MapAnnotation.m */; };
 		91753FACD265A70CC97C88337327D5F8 /* MapView.h in Headers */ = {isa = PBXBuildFile; fileRef = DCA940672B323ADC8CD93578C7268826 /* MapView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A821013817A45B5D8BC7246035A144E7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C437CEA2C655E1009251A68F1DC6C159 /* UIKit.framework */; };
 		B2486446A4D2CF08278494A31C96FBA8 /* MapMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = AD777B42C8151A90F36466A4554FB404 /* MapMarker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -70,6 +72,8 @@
 		61F0B396A33403C8287F10A0018E1581 /* IndoorMapView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "IndoorMapView-dummy.m"; sourceTree = "<group>"; };
 		7013EBE525DAEEF5CA0B94D842F1B963 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/MapKit.framework; sourceTree = DEVELOPER_DIR; };
 		7514C38198AD2E1CA7349B7177C5BACF /* Pods-IndoorMapView_Example-IndoorMapView_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-IndoorMapView_Example-IndoorMapView_Tests-dummy.m"; sourceTree = "<group>"; };
+		788EA26C1CF31C6C0021CCF0 /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
+		788EA26D1CF31C6C0021CCF0 /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
 		7999577AFD60683D5E16D892E05DE352 /* Pods-IndoorMapView_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-IndoorMapView_Example-resources.sh"; sourceTree = "<group>"; };
 		7B3328467CF16447C94E88A5D645927E /* Pods_IndoorMapView_Example_IndoorMapView_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IndoorMapView_Example_IndoorMapView_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B72F328FDCB4D0AF57A06642A5ECDE6 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 				C8ECB4660CB26419C8A239343026D65A /* MapMarker.m */,
 				A7F69C6A20672388EBC924DCB8791EEC /* MapPoint.h */,
 				4CC962F1CF951F57D58252BBA714F44F /* MapPoint.m */,
+				788EA26C1CF31C6C0021CCF0 /* MapAnnotation.h */,
+				788EA26D1CF31C6C0021CCF0 /* MapAnnotation.m */,
 				DCA940672B323ADC8CD93578C7268826 /* MapView.h */,
 				C47A97F0E22EE27831EBDA7BE08DB8C9 /* MapView.m */,
 				CBC25AE1723A8DD7B0988437852036B3 /* TilingView.h */,
@@ -288,6 +294,7 @@
 			files = (
 				25204C86AEF461BC2C9C544833C7AB33 /* IndoorMapView-umbrella.h in Headers */,
 				B2486446A4D2CF08278494A31C96FBA8 /* MapMarker.h in Headers */,
+				788EA26E1CF31C6C0021CCF0 /* MapAnnotation.h in Headers */,
 				1D351AD4D0D1C297F08F9B8BA0AB45A6 /* MapPoint.h in Headers */,
 				91753FACD265A70CC97C88337327D5F8 /* MapView.h in Headers */,
 				CC772BF28742CC1FACD64567954F7F60 /* TilingView.h in Headers */,
@@ -457,6 +464,7 @@
 				FF9E6895B470FAE7ECC6290DDEA542A9 /* MapPoint.m in Sources */,
 				34CB24FC73A87F62ED092511AE81BC8F /* MapView.m in Sources */,
 				DEA3A087EFCEFF15F41F021A49B5AE39 /* TilingView.m in Sources */,
+				788EA26F1CF31C6C0021CCF0 /* MapAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
