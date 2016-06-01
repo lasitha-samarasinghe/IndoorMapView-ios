@@ -151,10 +151,15 @@ static CGFloat _currentLevel;
     [mark.button setImage:scaledImage forState:normal];
     mark.button.userInteractionEnabled = YES;
     [mark.button addTarget:self action:@selector(markerClicked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIPanGestureRecognizer *panRecognizer;
+    panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(wasDragged:)];
+    [mark.button addGestureRecognizer:panRecognizer];
     mark.button.tag = markers.count;
     return mark;
 }
 
+/*
 -(void)createAnnotationForMarker:(MapMarker*)marker
 {
     selectedMarker = marker;
@@ -242,6 +247,12 @@ static CGFloat _currentLevel;
     [self addSubview:annotationView];
 
 }
+ */
+
+-(void)showAnnotationForMarker:(MapMarker*)marker
+{
+    
+}
 
 -(UIImage*)scaleImage:(UIImage*)image forRect:(CGRect)rect
 {
@@ -277,7 +288,7 @@ static CGFloat _currentLevel;
     UIButton* btn = (UIButton*)sender;
     MapMarker* marker = [markers objectAtIndex:btn.tag];
     [self.mapDelegate onMarkerClicked:marker];
-    [self createAnnotationForMarker:marker];
+    [self showAnnotationForMarker:marker];
     
     CGPoint newPoint = [_tilingView convertPoint:CGPointMake(marker.x, marker.y) toView:self];
     [self setContentOffset:CGPointMake(newPoint.x-self.frame.size.width/2, newPoint.y-self.frame.size.height/2) animated:YES];
@@ -306,6 +317,45 @@ static CGFloat _currentLevel;
         {
             [self.mapDelegate onMapClicked:mPoint];
         }
+    }
+}
+
+-(void)wasDragged:(UIPanGestureRecognizer *)recognizer
+{
+    UIButton *button = (UIButton *)recognizer.view;
+    CGPoint translation = [recognizer translationInView:button];
+    button.center = CGPointMake(button.center.x + translation.x, button.center.y + translation.y);
+    [recognizer setTranslation:CGPointZero inView:button];
+    MapMarker* marker = [markers objectAtIndex:button.tag];
+    CGPoint touchPoint = [recognizer locationInView: _tilingView];
+    CGSize mapBounds = _tilingView.frame.size;
+    if((touchPoint.x>=0)&&(touchPoint.x<=mapBounds.width)&&(touchPoint.y>=0)&&(touchPoint.y<=mapBounds.height)&&(!isMarker))
+    {
+        float y = touchPoint.y*(_tilingView.frame.size.height*4096)/(pow(2, _levels-1)*pow(2, _levels-1));
+        float x = touchPoint.x*(_tilingView.frame.size.height*4096)/(pow(2, _levels-1)*pow(2, _levels-1));
+        MKMapPoint point = MKMapPointMake(x, y);
+        CLLocationCoordinate2D coordinate = MKCoordinateForMapPoint(point);
+        MapPoint* mPoint = [[MapPoint alloc]init];
+        mPoint.x = touchPoint.x;
+        mPoint.y = touchPoint.x;
+        mPoint.longitude = coordinate.longitude;
+        mPoint.latitude = coordinate.latitude;
+        if(self.mapDelegate != nil)
+        {
+            [self.mapDelegate onMapClicked:mPoint];
+        }
+    }
+    else if(isMarker)
+    {
+        CGPoint btnLoc = [recognizer locationInView:button];
+        float y = (touchPoint.y-btnLoc.y+button.frame.size.height)*(_tilingView.frame.size.height*4096)/(pow(2, _levels-1)*pow(2, _levels-1));
+        float x = (touchPoint.x-btnLoc.x+button.frame.size.width/2)*(_tilingView.frame.size.height*4096)/(pow(2, _levels-1)*pow(2, _levels-1));
+        MKMapPoint point = MKMapPointMake(x, y);
+        CLLocationCoordinate2D coordinate = MKCoordinateForMapPoint(point);
+        marker.x = touchPoint.x;
+        marker.y = touchPoint.x;
+        marker.longitude = coordinate.longitude;
+        marker.latitude = coordinate.latitude;
     }
 }
 
@@ -489,11 +539,10 @@ static CGFloat _currentLevel;
             selectedMarker = marker;
         }
     }
-    
-    if(selectedMarker!=nil)
-    {
-        [self createAnnotationForMarker:selectedMarker];
-    }
+//    if(selectedMarker!=nil)
+//    {
+//        [self createAnnotationForMarker:selectedMarker];
+//    }
 }
 
 #pragma mark - Configure scrollView to display new image (tiled or not)
